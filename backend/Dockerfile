@@ -6,7 +6,8 @@ USER app
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-COPY . . 
+COPY . .
+RUN chmod +x docker-entrypoint-standalone.sh docker-entrypoint.sh wait-for
 
 EXPOSE 3001 
 
