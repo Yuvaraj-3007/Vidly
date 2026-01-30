@@ -4,43 +4,42 @@ const Movie = require("../models/movie");
 
 const router = express.Router();
 
-// GET all movies
+/**
+ * GET all movies
+ */
 router.get("/", async (req, res) => {
   const movies = await Movie.find().sort("title");
   res.json(movies);
 });
 
-// GET movie by ID
+/**
+ * GET movie by id
+ */
 router.get("/:id", validateId, async (req, res) => {
   const movie = await Movie.findById(req.params.id);
   if (!movie) return res.status(404).send("Movie not found");
   res.json(movie);
 });
 
-// CREATE movie
+/**
+ * CREATE movie
+ */
 router.post("/", async (req, res) => {
   if (!req.body.title) {
-    return res.status(400).send("Title is required.");
+    return res.status(400).send("Title is required");
   }
 
-  const movie = new Movie({
-    title: req.body.title,
-    year: req.body.year,
-    rating: req.body.rating,
-  });
-
+  const movie = new Movie({ title: req.body.title });
   await movie.save();
   res.status(201).json(movie);
 });
 
-// DELETE movie
+/**
+ * DELETE movie
+ */
 router.delete("/:id", validateId, async (req, res) => {
   const movie = await Movie.findByIdAndDelete(req.params.id);
-
-  if (!movie) {
-    return res.status(404).send("The movie with the given ID was not found.");
-  }
-
+  if (!movie) return res.status(404).send("Movie not found");
   res.status(204).send();
 });
 

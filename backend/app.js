@@ -4,7 +4,13 @@ const movies = require("./routes/movie");
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/", (req, res) => {
